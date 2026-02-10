@@ -72,7 +72,51 @@ https://github.com/TharinduTS/cell_type_enrichment_v2?tab=readme-ov-file#6-ii-ra
 Just like in cell type enrichment, I am going to drop any values with less than 0.5 for log 2 enrichment penalized value so it has to at least have 1.5 times the background noise to be considered in the calculation
 
 ```awk
-wk -F'\t' 'NR==1 {print; next} { if ($11+0 >= 0.5) print }' enrichment_values_for_tissue_types.tsv > enrichment_values_for_tissue_types_filtered.tsv
+awk -F'\t' 'NR==1 {print; next} { if ($11+0 >= 0.5) print }' enrichment_values_for_tissue_types.tsv > enrichment_values_for_tissue_types_filtered.tsv
 ```
+
+Then I ranked genes by the number of tissue types they are expressed in
+
+```bash
+python rank_genes.py \
+  --input enrichment_values_for_tissue_types_filtered.tsv \
+  --output ranked_genes_unique_tissuetypes.tsv \
+  --presence-col "Tissue" \
+  --unique-col "Tissue" \
+  --unique \
+  --drop-na \
+  --drop-negatives \
+  --top-percent 100 \
+  --top-col log2_enrichment_penalized \
+  --sorting-col log2_enrichment_penalized \
+  --gene-col Gene \
+  --output-count-col top_percent_Tissue_type_count \
+  --output-list-col top_percent_Tissue_types \
+  --output-rank-within-col rank_within_Tissue_type \
+  --output-overall-rank-col overall_rank_by_Tissue_type \
+  --verbose
+```
+
+# 4) Cluster data integration
+
+## 4-I Introduction
+
+I am adding a filter for 1 or less and 2 or higher clusters just like in cell type enrichment chapter 7 here
+
+## 4-II Script
+
+This needs categorize_column.py from
+
+```url
+https://github.com/TharinduTS/cell_type_enrichment_v2?tab=readme-ov-file#7_ii-cluster-categories-script
+```
+
+## 4-III Run command
+
+```
+ython categorize_column.py ranked_genes_unique_tissuetypes.tsv ranked_genes_with_cluster_categories.tsv clusters_used 2 cluster_limit
+```
+
+
 
 
