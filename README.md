@@ -304,7 +304,7 @@ python universal_plot_maker_plus.py \
   --color-choices "Cell_types_present|Tissue" \
   --filter-cols "Tissue|cluster_limit|Protein_Class" \
   --search-cols "Gene|Gene name|Present Cell types" \
-  --details "Gene|Gene name|clusters_used|Enrichment score|log2_enrichment| specificity_tau |log2_enrichment_penalized|top_percent_Tissue_type_count|top_percent_Tissue_types|overall_rank_by_Tissue_type|rank_within_Tissue_type|Protein_Class|Cell_types_present" \
+  --details "Gene|Gene name|Tissue|clusters_used|Enrichment score|log2_enrichment| specificity_tau |log2_enrichment_penalized|top_percent_Tissue_type_count|top_percent_Tissue_types|overall_rank_by_Tissue_type|rank_within_Tissue_type|Protein_Class|Cell_types_present" \
   --title "Tissue type Enrichmnt V 2.2" \
   --dup-policy overlay \
   --sort-primary "overall_rank_by_Tissue_type" \
