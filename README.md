@@ -237,14 +237,20 @@ https://github.com/TharinduTS/cell_type_enrichment_v2?tab=readme-ov-file#11-ii-m
 
 Because the next step is going to add extra data to the Cell type column, I am keeping a copy of that column to be used in 'color by Cell type' later in plotting
 
-Tis command could be little confusing because I used cell types for the initial script writing and now I am doing it for Tissues
+```
+awk -F'\t' 'BEGIN{OFS="\t"} NR==1{print $0, "Cell_types_present"; next} {print $0, $19}' ranked_genes_cleaned_with_cell_type_data.tsv > ranked_genes_cleaned_with_cell_type_data_duplicated.tsv
+```
+
+This command could be little confusing because I used cell types for the initial script writing and now I am doing it for Tissues
 
 *Note last 3 arguments in the following command*
+
+### Run command
 
 ```bash
 python3 add_enrichment_to_tissues.py \
   --table1 combined_expression_data_split_with_clusters.tsv \
-  --table2 ranked_genes_cleaned_with_cell_type_data.tsv \
+  --table2 ranked_genes_cleaned_with_cell_type_data_duplicated.tsv \
   --output Final_data_with_cell_type_expression_data.tsv \
   --missing-value "Not_high_enough" \
   --value-sep ":" \
@@ -255,6 +261,72 @@ python3 add_enrichment_to_tissues.py \
   --cell-type-col Tissue \
   --tissue-col-table1 "Cell type" \
   --tissue-col-table2 "Present Cell types" 
+```
+
+## 6-III Select data to plot
+
+Just like I did in chapter Cell type enrichment chapter 11, here I am selecting how many top data rows to plot, to avoid procssing complications
+
+first 10k data points for emailing
+
+```
+head -n 10000 Final_data_with_cell_type_expression_data.tsv> top_10k_from_final_data.tsv
+```
+
+# 7) Making interactive plots
+
+## 7-I Introduction
+
+I am making interactive plots for tissue type expression here similar to cell type expression chapter 11-IV here.
+
+## 7-II Scripts
+
+For this we need universal_plot_maker_plus.py from
+
+```
+https://github.com/TharinduTS/universal_plot_maker_plus_with_subplot/blob/main/README.md
+```
+
+## 7-III Run command
+
+I am using all the data here for the plot as it is not as big as cell type enrichment
+
+```bash
+python universal_plot_maker_plus.py \
+  --file Final_data_with_cell_type_expression_data.tsv \
+  --out Tissue_type_Enrichment.html \
+  --plot-type bar \
+  --x-choices "Gene name | Gene" \
+  --y-choices "Enrichment score|log2_enrichment| specificity_tau | Enrichment score (tau penalized)|log2_enrichment_penalized" \
+  --default-x "Gene name" \
+  --default-y "log2_enrichment_penalized" \
+  --color-col "Tissue" \
+  --color-choices "Cell_types_present|Tissue" \
+  --filter-cols "Tissue|cluster_limit|Protein_Class" \
+  --search-cols "Gene|Gene name|Present Cell types" \
+  --details "Gene|Gene name|clusters_used|Enrichment score|log2_enrichment| specificity_tau |log2_enrichment_penalized|top_percent_Tissue_type_count|top_percent_Tissue_types|overall_rank_by_Tissue_type|rank_within_Tissue_type|Protein_Class|Cell_types_present" \
+  --title "Tissue type Enrichmnt V 2.2" \
+  --dup-policy overlay \
+  --sort-primary "overall_rank_by_Tissue_type" \
+  --sort-primary-order asc \
+  --sort-secondary "log2_enrichment_penalized" \
+  --sort-secondary-order desc \
+  --initial-zoom 100 \
+  --self-contained \
+  --lang en \
+  --pt-enable \
+  --pt-col "Present Cell types" \
+  --pt-title "Enrichment per present Cell type" \
+  --pt-x-label "Cell type" \
+  --pt-y-label "log2 Enrichment Penalized" \
+  --pt-color "#2a9d8f" \
+  --pt-height 360 \
+  --pt-width auto \
+  --pt-rotate -35 \
+  --pt-container-id "present-tissues-plot" \
+  --pt-enable --pt-mode flow \
+  --pt-anchor "#rowDetails" --pt-position after \
+  --pt-offset-x -300 --pt-offset-y -10
 ```
 
 
