@@ -291,6 +291,8 @@ https://github.com/TharinduTS/universal_plot_maker_plus_with_subplot/blob/main/R
 
 I am using all the data here for the plot as it is not as big as cell type enrichment
 
+### The whole dataset
+
 ```bash
 python universal_plot_maker_plus.py \
   --file Final_data_with_cell_type_expression_data.tsv \
@@ -328,5 +330,43 @@ python universal_plot_maker_plus.py \
   --pt-anchor "#rowDetails" --pt-position after \
   --pt-offset-x -300 --pt-offset-y -10
 ```
+### only top 10k
 
+```bash
+python universal_plot_maker_plus.py \
+  --file top_10k_from_final_data.tsv \
+  --out Tissue_type_Enrichment_top10k.html \
+  --plot-type bar \
+  --x-choices "Gene name | Gene" \
+  --y-choices "Enrichment score|log2_enrichment| specificity_tau | Enrichment score (tau penalized)|log2_enrichment_penalized" \
+  --default-x "Gene name" \
+  --default-y "log2_enrichment_penalized" \
+  --color-col "Tissue" \
+  --color-choices "Cell_types_present|Tissue" \
+  --filter-cols "Tissue|cluster_limit|Protein_Class" \
+  --search-cols "Gene|Gene name|Present Cell types" \
+  --details "Gene|Gene name|Tissue|clusters_used|Enrichment score|log2_enrichment| specificity_tau |log2_enrichment_penalized|top_percent_Tissue_type_count|top_percent_Tissue_types|overall_rank_by_Tissue_type|rank_within_Tissue_type|Protein_Class|Cell_types_present" \
+  --title "Tissue type Enrichmnt V 2.2" \
+  --dup-policy overlay \
+  --sort-primary "overall_rank_by_Tissue_type" \
+  --sort-primary-order asc \
+  --sort-secondary "log2_enrichment_penalized" \
+  --sort-secondary-order desc \
+  --initial-zoom 100 \
+  --self-contained \
+  --lang en \
+  --pt-enable \
+  --pt-col "Present Cell types" \
+  --pt-title "Enrichment per present Cell type" \
+  --pt-x-label "Cell type" \
+  --pt-y-label "log2 Enrichment Penalized" \
+  --pt-color "#2a9d8f" \
+  --pt-height 360 \
+  --pt-width auto \
+  --pt-rotate -35 \
+  --pt-container-id "present-tissues-plot" \
+  --pt-enable --pt-mode flow \
+  --pt-anchor "#rowDetails" --pt-position after \
+  --pt-offset-x -300 --pt-offset-y -10
+```
 
