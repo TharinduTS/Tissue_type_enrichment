@@ -69,10 +69,10 @@ https://github.com/TharinduTS/cell_type_enrichment_v2?tab=readme-ov-file#6-ii-ra
 
 ## 3-III Run commands
 
-Just like in cell type enrichment, I am going to drop any values with less than 0.5 for log 2 enrichment penalized value so it has to at least have 1.5 times the background noise to be considered in the calculation
+unlike in cell type enrichment, I am only going to drop any values with less than 0 for log 2 enrichment penalized value because the differences are not as big in tissue specific expression
 
 ```awk
-awk -F'\t' 'NR==1 {print; next} { if ($11+0 >= 0.5) print }' enrichment_values_for_tissue_types.tsv > enrichment_values_for_tissue_types_filtered.tsv
+awk -F'\t' 'NR==1 {print; next} { if ($11+0 >= 0) print }' enrichment_values_for_tissue_types.tsv > enrichment_values_for_tissue_types_filtered.tsv
 ```
 
 Then I ranked genes by the number of tissue types they are expressed in
