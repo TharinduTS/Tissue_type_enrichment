@@ -114,7 +114,7 @@ https://github.com/TharinduTS/cell_type_enrichment_v2?tab=readme-ov-file#7_ii-cl
 ## 4-III Run command
 
 ```
-ython categorize_column.py ranked_genes_unique_tissuetypes.tsv ranked_genes_with_cluster_categories.tsv clusters_used 2 cluster_limit
+python categorize_column.py ranked_genes_unique_tissuetypes.tsv ranked_genes_with_cluster_categories.tsv clusters_used 2 cluster_limit
 ```
 
 # 5) Protein data integration
